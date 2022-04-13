@@ -1,5 +1,7 @@
-package chain
+package chain.example
 
+import chain.Handler
+import data.Event
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
 import io.mockk.spyk
@@ -11,10 +13,10 @@ import org.junit.jupiter.api.assertThrows
 internal class BaseDataHandlerTest {
 
     @MockK
-    private lateinit var data: Data
+    private lateinit var event: Event
 
     @MockK
-    private lateinit var nextHandler: Handler<Data>
+    private lateinit var nextHandler: Handler<Event>
 
     @BeforeEach
     internal fun setUp() {
@@ -30,10 +32,10 @@ internal class BaseDataHandlerTest {
         chain.shouldProcess = true
 
         // When calling process on some data...
-        chain.process(data)
+        chain.process(event)
 
         // We expect it to be processed.
-        verify { data.name }
+        verify { event.name }
         // We don't expect the next handler to be called.
         verify(exactly = 0) {
             chain.passToNext(any())
@@ -50,7 +52,7 @@ internal class BaseDataHandlerTest {
 
         assertThrows<IllegalArgumentException> {
             // When calling process on some data, since the next is null, we expect an exception.
-            chain.process(data)
+            chain.process(event)
         }
     }
 
@@ -63,11 +65,11 @@ internal class BaseDataHandlerTest {
         chain.shouldProcess = false
 
         // When calling process on some data...
-        chain.process(data)
+        chain.process(event)
 
         // We don't expect it to be processed.
         verify(exactly = 0) {
-            data.name
+            event.name
         }
 
         // We expect the next handler to be called.
@@ -76,15 +78,15 @@ internal class BaseDataHandlerTest {
         }
     }
 
-    class TestBaseDataHandler(next: Handler<Data>?) : BaseDataHandler(next) {
+    class TestBaseDataHandler(next: Handler<Event>?) : BaseDataHandler(next) {
         var shouldProcess: Boolean = false
 
-        override fun process(data: Data) {
+        override fun process(event: Event) {
             // Conditionally process, for testing
             if (shouldProcess) {
-                data.name
+                event.name
             } else {
-                passToNext(data)
+                passToNext(event)
             }
         }
     }

@@ -1,5 +1,7 @@
-package chain
+package chain.example
 
+import chain.Handler
+import data.Event
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -11,10 +13,10 @@ import org.junit.jupiter.api.Test
 internal class ScenarioOneHandlerTest {
 
     @MockK
-    private lateinit var data: Data
+    private lateinit var event: Event
 
     @MockK
-    private lateinit var nextHandler: Handler<Data>
+    private lateinit var nextHandler: Handler<Event>
 
     @BeforeEach
     internal fun setUp() {
@@ -28,15 +30,15 @@ internal class ScenarioOneHandlerTest {
 
         // Given the data name doesn't start with "A":
         every {
-            data.name
+            event.name
         } returns "Other"
 
         // When processing...
-        handler.process(data)
+        handler.process(event)
 
         // Whe expect the data to be passed to the next handler.
         verify {
-            handler.passToNext(data)
+            handler.passToNext(event)
         }
     }
 
@@ -47,20 +49,20 @@ internal class ScenarioOneHandlerTest {
 
         // Given the data name starts with "A":
         every {
-            data.name
+            event.name
         } returns "Addison"
 
         // When processing...
-        handler.process(data)
+        handler.process(event)
 
         // Whe expect the data NOT to be passed to the next handler.
         verify(exactly = 0) {
-            handler.passToNext(data)
+            handler.passToNext(event)
         }
 
         // We expect the data to be processed.
         verify {
-            data.name
+            event.name
         }
     }
 }
