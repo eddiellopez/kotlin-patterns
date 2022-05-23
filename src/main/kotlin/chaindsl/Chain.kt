@@ -15,7 +15,7 @@ class Chain<T> private constructor(val links: List<LinkableHandler<T>>) {
      * @throws IllegalArgumentException if no handler has been installed that can handle the data.
      */
     fun process(data: T) {
-        links.firstOrNull { it.predicateSupplier.invoke(data) }
+        links.firstOrNull { it.predicateSupplier(data) }
             ?.handlerSupplier
             ?.invoke()
             ?.process(data)

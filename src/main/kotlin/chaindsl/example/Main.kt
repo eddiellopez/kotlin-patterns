@@ -14,7 +14,7 @@ fun main() {
         handle {
             by { HandlerTwo() }
             whenever {
-                name.length >= 5
+                name.length < 11
             }
         }
     }
@@ -22,6 +22,6 @@ fun main() {
     // Process the events.
     with(chain) {
         process(Event(name = "A name"))
-        process(Event(name = "Another name"))
+        process(Event(name = "Long name"))
     }
 }

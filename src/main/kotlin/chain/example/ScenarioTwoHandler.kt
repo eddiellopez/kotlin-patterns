@@ -11,7 +11,7 @@ import data.Event
 class ScenarioTwoHandler(next: Handler<Event>? = null) : BaseDataHandler(next) {
 
     override fun process(event: Event) {
-        if (event.name.startsWith("B")) {
+        if (event.name.length < 11) {
             println("ScenarioTwoHandler handling $event")
         } else {
             passToNext(event)

@@ -28,10 +28,10 @@ internal class ScenarioOneHandlerTest {
         // Considering the handler under test:
         val handler = spyk(ScenarioOneHandler(nextHandler))
 
-        // Given the data name doesn't start with "A":
+        // Given the data name length is not < 7:
         every {
             event.name
-        } returns "Other"
+        } returns "a long name"
 
         // When processing...
         handler.process(event)
@@ -47,10 +47,10 @@ internal class ScenarioOneHandlerTest {
         // Considering the handler under test:
         val handler = spyk(ScenarioOneHandler(nextHandler))
 
-        // Given the data name starts with "A":
+        // Given the data name length is < 7
         every {
             event.name
-        } returns "Addison"
+        } returns "Name"
 
         // When processing...
         handler.process(event)

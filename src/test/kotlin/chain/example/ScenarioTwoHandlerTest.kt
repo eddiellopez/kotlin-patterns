@@ -28,10 +28,10 @@ internal class ScenarioTwoHandlerTest {
         // Considering the handler under test:
         val handler = spyk(ScenarioTwoHandler(nextHandler))
 
-        // Given the data name doesn't start with "B":
+        // Given the data name doesn't have a length < 11:
         every {
             event.name
-        } returns "Other"
+        } returns "Other string to be processed"
 
         // When processing...
         handler.process(event)
@@ -47,7 +47,7 @@ internal class ScenarioTwoHandlerTest {
         // Considering the handler under test:
         val handler = spyk(ScenarioTwoHandler(nextHandler))
 
-        // Given the data name starts with "B":
+        // Given the data name length is < 11
         every {
             event.name
         } returns "Beats"
